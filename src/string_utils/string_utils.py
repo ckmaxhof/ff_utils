@@ -7,14 +7,6 @@ import numpy as np
 import re
 import string
 
-import sys
-sys.path.append('..')
-sys.path.append('/home/maximilian.hofmann/')
-
-from utils import utils
-
-bg = utils.BigQuery()
-
 ### Text Cleaning
 patterns_item = [
     re.compile(r"\((\d+)\)"),
