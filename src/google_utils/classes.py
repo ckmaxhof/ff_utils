@@ -44,7 +44,6 @@ class BigQuery(GoogleBase):
         schema=None, 
         autodetect=True, 
         max_bad_records=0,
-        field_delimiter='%'
         ):
 
         job_config = bigquery.LoadJobConfig(
@@ -54,7 +53,6 @@ class BigQuery(GoogleBase):
             schema=schema,
             allow_quoted_newlines=True,
             max_bad_records = max_bad_records,
-            field_delimiter=field_delimiter,
         )
 
         result_list = []
