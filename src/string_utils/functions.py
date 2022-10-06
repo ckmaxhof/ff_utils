@@ -1,4 +1,4 @@
-import constants
+from .constants import ignore_stem_words, stopwords
 
 from collections import Counter
 from nltk.stem import PorterStemmer
@@ -103,7 +103,7 @@ def to_lower_string(name):
     
     return name.lower()
 
-def remove_stopwords(name, stopwords=constants.stopwords):
+def remove_stopwords(name, stopwords=stopwords):
     new_name = []
     for word in name.split(' '):
         if word.lower() not in stopwords and word != '':
@@ -111,17 +111,17 @@ def remove_stopwords(name, stopwords=constants.stopwords):
             
     return ' '.join(new_name)
 
-def remove_stopwords_new(name, stopwords=constants.stopwords):
+def remove_stopwords_new(name, stopwords=stopwords):
     return ' '.join([word for word in name.split(' ') if word not in stopwords and word != ''])
 
-def remove_stopwords_new_new(name, stopwords=constants.stopwords):
+def remove_stopwords_new_new(name, stopwords=stopwords):
     stopwords_dict = Counter(stopwords)
     return ' '.join([word.lower() for word in name.split(' ') if word.lower() not in stopwords_dict and word != ''])
 
 def stem_sentence(name):
     porter = PorterStemmer()
     token_words = word_tokenize(name)
-    stem_sentence = [porter.stem(word) if word not in constants.ignore_stem_words else word for word in token_words]
+    stem_sentence = [porter.stem(word) if word not in ignore_stem_words else word for word in token_words]
     return ' '.join(stem_sentence)
 
 def string_to_clean_name(name):
