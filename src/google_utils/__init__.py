@@ -1,1 +1,1 @@
-from .classes import BigQuery
+from .classes import *
