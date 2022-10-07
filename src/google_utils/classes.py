@@ -58,44 +58,6 @@ class BigQuery(GoogleBase):
 
         return load_job
 
-    def upload_to_table_from_df_depr(
-        self, 
-        df, 
-        tbl_id, 
-        chunk_size=None,
-        how='WRITE_APPEND', 
-        clustering_fields = None, 
-        schema=None, 
-        autodetect=True, 
-        max_bad_records=0,
-        ):
-
-        job_config = bigquery.LoadJobConfig(
-            write_disposition=self.__get_write_disposition(how),
-            clustering_fields=clustering_fields,
-            autodetect=autodetect,
-            schema=schema,
-            allow_quoted_newlines=True,
-            max_bad_records = max_bad_records,
-        )
-
-        result_list = []
-        failed_list_df = []
-
-        if chunk_size:
-            list_df = [df[i:i+chunk_size] for i in range(0,df.shape[0],chunk_size)]
-            for df in list_df:
-                try:
-                    load_job = self.client.load_table_from_dataframe(df, tbl_id, job_config=job_config)
-                    result_list.append(load_job.result())
-                except:
-                    failed_list_df.append(df)
-
-        load_job = self.client.load_table_from_dataframe(df, tbl_id, job_config=job_config)
-        result_list.append(load_job.result())
-
-        return result_list, failed_list_df
-
 class GSheets(GoogleBase):
     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_info=None):
         super().__init__(project_id, oauth_file, svc_account_info)
