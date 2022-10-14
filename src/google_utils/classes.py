@@ -2,6 +2,7 @@ from json import load
 from google.cloud import bigquery
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
+import googlemaps
 import pandas as pd
 import pygsheets
 
@@ -62,3 +63,8 @@ class GSheets(GoogleBase):
     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_info=None):
         super().__init__(project_id, oauth_file, svc_account_info)
         self.client = pygsheets.authorize(custom_credentials=self.creds)
+
+class GMaps(GoogleBase):
+     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_info=None):
+        super().__init__(project_id, oauth_file, svc_account_info)
+        self.client = googlemaps.Client(client_id=self.creds.client_id, client_secret=self.creds.client_secret)
