@@ -7,11 +7,13 @@ import pandas as pd
 import pygsheets
 
 class GoogleBase:
-    def __init__(self, project_id, oauth_file=None, svc_account_info=None):
+    def __init__(self, project_id, oauth_file=None, svc_account_file=None, svc_account_info=None):
         self.project_id = project_id
 
         if oauth_file:
             self.creds = Credentials.from_authorized_user_file(oauth_file)
+        elif svc_account_file:
+            self.creds = service_account.Credentials.from_service_account_file(svc_account_file)
         elif svc_account_info:
             self.creds = service_account.Credentials.from_service_account_info(svc_account_info)
 
