@@ -5,7 +5,7 @@ import pandas as pd
 import pygsheets
 
 class GoogleBase:
-    def __init__(self, project_id, oauth_file=None, svc_account_file=None, svc_account_info=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None):
         self.project_id = project_id
 
         if oauth_file:
