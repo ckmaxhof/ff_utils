@@ -1,4 +1,3 @@
-from json import load
 from google.cloud import bigquery
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
