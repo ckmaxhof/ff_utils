@@ -15,11 +15,6 @@ class GoogleBase:
         elif svc_account_info:
             self.creds = service_account.Credentials.from_service_account_info(svc_account_info)
 
-        print(self.creds)
-
-    def return_client_id_secret(self):
-        return self.creds.client_id, self.creds.client_secret
-
 class BigQuery(GoogleBase):
     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None):
         super().__init__(project_id, oauth_file, svc_account_file, svc_account_info)
