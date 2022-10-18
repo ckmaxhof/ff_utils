@@ -28,7 +28,7 @@ def partition_date_range(
 
     l = []
     sub_begin_date = begin_date
-    while sub_begin_date <= end_date:
+    while sub_begin_date < end_date:
         sub_end_date = min(
             end_date, sub_begin_date + pd.Timedelta(days=num_dates_per_part - 1)
         )
