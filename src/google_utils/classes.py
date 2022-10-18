@@ -15,6 +15,8 @@ class GoogleBase:
         elif svc_account_info:
             self.creds = service_account.Credentials.from_service_account_info(svc_account_info)
 
+        print(self.creds)
+
     def return_client_id_secret(self):
         return self.creds.client_id, self.creds.client_secret
 
