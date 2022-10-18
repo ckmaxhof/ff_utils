@@ -1,7 +1,8 @@
 import pandas as pd
+from datetime import timedelta
 
 def partition_date_range(
-    begin_date: pd.Timestamp, end_date: pd.Timestamp, num_dates_per_part: int
+    begin_date: pd.Timestamp, end_date: pd.Timestamp, num_dates_per_part: int, week_trunc: bool = True
 ):
     """
     Divides the date range [begin_date, end_date] into parts with smaller
@@ -21,6 +22,10 @@ def partition_date_range(
         Tuples of (sub_begin_date, sub_end_date) in each part
     """
     
+    if week_trunc:
+        begin_date = begin_date - timedelta(days=begin_date.weekday())
+        end_date = end_date - timedelta(days=end_date.weekday())
+
     l = []
     sub_begin_date = begin_date
     while sub_begin_date <= end_date:
