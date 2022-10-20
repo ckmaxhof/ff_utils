@@ -5,7 +5,7 @@ import pandas as pd
 import pygsheets
 
 class GoogleBase:
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
         self.project_id = project_id
 
         if oauth_file:
@@ -14,10 +14,14 @@ class GoogleBase:
             self.creds = service_account.Credentials.from_service_account_file(svc_account_file)
         elif svc_account_info:
             self.creds = service_account.Credentials.from_service_account_info(svc_account_info)
+        elif ds_secret:
+            from ds.utilities.secrets import secrets
+            s = secrets.Secrets()
+            self.creds = service_account.Credentials.from_service_account_info(s.get_secret(ds_secret))
 
 class BigQuery(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None):
-        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info)
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
+        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
         self.client = bigquery.Client(credentials=self.creds, project=self.project_id)
 
     def run_query(self, query: str) -> pd.DataFrame:
@@ -60,6 +64,6 @@ class BigQuery(GoogleBase):
         return load_job
 
 class GSheets(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None):
-        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info)
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
+        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
         self.client = pygsheets.authorize(custom_credentials=self.creds)
