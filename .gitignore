@@ -1,5 +1,8 @@
 .ipynb_checkpoints/*
+src/google_utils/.ipynb_checkpoints/*
 *.ipynb
 .python-version
 __pycache__
+.ipynb_checkpoints
+
 
