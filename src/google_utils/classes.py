@@ -1,4 +1,4 @@
-from google.cloud import bigquery
+from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 import pandas as pd
@@ -67,3 +67,26 @@ class GSheets(GoogleBase):
     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
         super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
         self.client = pygsheets.authorize(custom_credentials=self.creds)
+
+class CloudStorage(GoogleBase):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
+        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
+        self.client = storage.Client(credentials=self.creds, project=self.project_id)
+
+    def upload(self, file_name: str, file_to_upload: str, bucket_name: str = "otter-sp"):
+        bucket = self.client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        blob.upload_from_filename(file_to_upload)
+    
+    def upload_df(self, file_name: str, df: pd.DataFrame, bucket_name: str = "brand_science", df_format: str = 'text/csv', field_delimiter: str = '%'):
+        bucket = self.client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        blob.upload_from_string(df.to_csv(index=False, encoding='utf-8', quoting=csv.QUOTE_NONE, quotechar='',escapechar='\\', sep=field_delimiter), df_format)
+
+    def download(self, file_name: str, download_to_path: str, bucket_name: str = "otter-sp"):
+        bucket = self.client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        blob.download_to_filename(download_to_path)
+
+    def list_files(self, bucket_name: str = "otter-sp"):
+        return [b for b in self.client.list_blobs(bucket_name)]
