@@ -66,8 +66,8 @@ class BigQuery(GoogleBase):
         return load_job
 
 class GSheets(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
-        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None, scopes=pyg_scopes):
+        super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret, scopes)
         self.client = pygsheets.authorize(custom_credentials=self.creds)
 
 class CloudStorage(GoogleBase):
