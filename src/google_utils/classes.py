@@ -7,7 +7,7 @@ import pygsheets
 pyg_scopes = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/spreadsheets']
 
 class GoogleBase:
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None, scopes=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret='brand_science_svc_account', scopes=None):
         self.project_id = project_id
 
         if oauth_file:
