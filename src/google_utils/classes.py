@@ -5,9 +5,10 @@ import pandas as pd
 import pygsheets
 
 pyg_scopes = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/spreadsheets']
+ds_secret = 'brand_science_svc_account'
 
 class GoogleBase:
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret='brand_science_svc_account', scopes=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None, scopes=None):
         self.project_id = project_id
 
         if oauth_file:
@@ -22,7 +23,7 @@ class GoogleBase:
             self.creds = service_account.Credentials.from_service_account_info(s.get_secret(ds_secret), scopes=scopes)
 
 class BigQuery(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None, scopes=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=ds_secret, scopes=None):
         super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret, scopes)
         self.client = bigquery.Client(credentials=self.creds, project=self.project_id)
 
@@ -66,12 +67,12 @@ class BigQuery(GoogleBase):
         return load_job
 
 class GSheets(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None, scopes=pyg_scopes):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=ds_secret, scopes=pyg_scopes):
         super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret, scopes)
         self.client = pygsheets.authorize(custom_credentials=self.creds)
 
 class CloudStorage(GoogleBase):
-    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=None):
+    def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=ds_secret):
         super().__init__(project_id, oauth_file, svc_account_file, svc_account_info, ds_secret)
         self.client = storage.Client(credentials=self.creds, project=self.project_id)
 
