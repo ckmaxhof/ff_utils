@@ -3,6 +3,7 @@ from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 import pandas as pd
 import pygsheets
+import time
 
 pyg_scopes = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/spreadsheets']
 ds_secret = 'brand_science_svc_account'
@@ -64,7 +65,12 @@ class BigQuery(GoogleBase):
 
         load_job = self.client.load_table_from_dataframe(df, tbl_id, job_config=job_config)
 
-        return load_job
+        while True:
+            query_job = self.client.get_job(load_job.job_id)
+            if query_job.state != 'RUNNING':
+                return query_job
+            print( "Job {} is currently in state {}".format( query_job.job_id, query_job.state ) )
+            time.sleep( 5 )
 
 class GSheets(GoogleBase):
     def __init__(self, project_id='css-operations', oauth_file=None, svc_account_file=None, svc_account_info=None, ds_secret=ds_secret, scopes=pyg_scopes):
